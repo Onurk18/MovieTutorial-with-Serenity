@@ -3,6 +3,7 @@ using Serenity.ComponentModel;
 using Serenity.Data;
 using Serenity.Data.Mapping;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace MovieTutorial.MovieDB;
@@ -61,9 +62,15 @@ public sealed class MovieRow : Row<MovieRow.RowFields>, IIdRow, INameRow
         get => fields.Runtime[this];
         set => fields.Runtime[this] = value;
     }
-
-
-
+    [DisplayName("Genres")]
+    [LookupEditor(typeof(GenreRow), Multiple = true), NotMapped]
+    [LinkingSetRelation(typeof(MovieGenresRow), "MovieId", "GenreId")]
+    public List<int> GenreList
+    {
+        get => fields.GenreList[this];
+        set => fields.GenreList[this] = value;
+    }
+    
     [DisplayName("Kind"), NotNull,DefaultValue(MovieKind.Film)]
     public MovieKind? Kind
     {
@@ -81,6 +88,7 @@ public sealed class MovieRow : Row<MovieRow.RowFields>, IIdRow, INameRow
         public DateTimeField ReleaseDate;
         public Int32Field Runtime;
         public EnumField<MovieKind> Kind;
+        public ListField<Int32> GenreList;
 
 
     }

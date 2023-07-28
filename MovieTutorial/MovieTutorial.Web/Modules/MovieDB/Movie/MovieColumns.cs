@@ -1,5 +1,6 @@
 using Serenity.ComponentModel;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace MovieTutorial.MovieDB.Columns;
@@ -17,7 +18,8 @@ public class MovieColumns
     public int Year { get; set; }
     public DateTime ReleaseDate { get; set; }
 
-
+    [Width(200), GenreListFormatter]
+    public List<int> GenreList { get; set; }
 
     [DisplayName("Runtime in Minutes"), Width(150), AlignRight]
     public int Runtime { get; set; }
