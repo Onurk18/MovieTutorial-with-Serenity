@@ -14,6 +14,10 @@
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="4.5.3.3" />
     <PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.4" />
+    <PackageReference Include="Hangfire.Core" Version="1.8.4" />
+    <PackageReference Include="Hangfire.Dashboard.Authorization" Version="3.0.1" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.2" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.2" />
@@ -26,7 +30,6 @@
     <PackageReference Include="Serenity.Net.Web" Version="6.7.6" />
     <PackageReference Include="Serenity.Extensions" Version="6.7.6" />
   </ItemGroup>
-  <ItemGroup></ItemGroup>
   <Target Name="NpmInstall" BeforeTargets="BeforeBuild" Condition="!Exists('node_modules\@types\jquery\index.d.ts')">
     <Message Text="Installing NPM packages..." Importance="high" />
     <Exec Command="npm install" />

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +23,10 @@ using Serenity.Web;
 using System;
 using System.Data.Common;
 using System.IO;
+using Hangfire;
+using Hangfire.SqlServer;
+using Hangfire.Dashboard;
+using Hangfire.Annotations;
 
 namespace MovieTutorial
 {
@@ -41,6 +45,26 @@ namespace MovieTutorial
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                // Reference the Default connection. If you want to add a new connection to 
+                // Hangfire's database then remember to add this connection in your appsettings.json                
+                .UseSqlServerStorage(Configuration.GetValue<string>("Data:Default:ConnectionString"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    UsePageLocksOnDequeue = true,
+                    DisableGlobalLocks = true
+                })
+            );
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer();
+
             services.AddSingleton<ITypeSource>(new DefaultTypeSource(new[]
             {
                 typeof(LocalTextRegistry).Assembly,
@@ -214,6 +238,18 @@ namespace MovieTutorial
             });
 
             app.ApplicationServices.GetRequiredService<IDataMigrations>().Initialize();
+            app.UseHangfireDashboard("/jobs", new DashboardOptions()
+            {
+                
+            });
+
+
+            // Setting up some example jobs
+            BackgroundJob.Enqueue<MovieTutorial.Web.Modules.Common.Jobs.SimpleJob>(job => job.Run());
+            RecurringJob.AddOrUpdate<MovieTutorial.Web.Modules.Common.Jobs.SimpleJob>(job => job.Run(), Cron.Hourly);
+            RecurringJob.AddOrUpdate<MovieTutorial.Web.Modules.Common.Jobs.SimpleJob>(job => job.Run(), "0 * * * *");
+
+
         }
 
         public static Action<IApplicationBuilder> ConfigureTestPipeline { get; set; }
@@ -233,5 +269,7 @@ namespace MovieTutorial
             // to enable POSTGRES: add Npgsql reference, set connections, and uncomment line below
             // DbProviderFactories.RegisterFactory("Npgsql", Npgsql.NpgsqlFactory.Instance);
         }
+
     }
+    
 }
