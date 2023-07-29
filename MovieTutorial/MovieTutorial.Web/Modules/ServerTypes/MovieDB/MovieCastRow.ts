@@ -5,6 +5,7 @@ export interface MovieCastRow {
     MovieId?: number;
     PersonId?: number;
     Character?: string;
+    MovieYear?: number;
     MovieTitle?: string;
     PersonFirstName?: string;
     PersonLastname?: string;

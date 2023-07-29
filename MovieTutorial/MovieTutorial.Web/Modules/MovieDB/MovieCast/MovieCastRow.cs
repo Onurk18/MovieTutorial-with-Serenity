@@ -50,6 +50,12 @@ public sealed class MovieCastRow : Row<MovieCastRow.RowFields>, IIdRow, INameRow
         get => fields.MovieTitle[this];
         set => fields.MovieTitle[this] = value;
     }
+    [DisplayName("Movie Year"), Expression($"{jMovie}.[Year]")]
+    public int? MovieYear
+    {
+        get => fields.MovieYear[this];
+        set => fields.MovieYear[this] = value;
+    }
 
     [DisplayName("Person First Name"), Expression("jPerson.[FirstName]")]
     public string PersonFirstName
@@ -79,7 +85,7 @@ public sealed class MovieCastRow : Row<MovieCastRow.RowFields>, IIdRow, INameRow
         public Int32Field MovieId;
         public Int32Field PersonId;
         public StringField Character;
-
+        public Int32Field MovieYear;
         public StringField MovieTitle;
         public StringField PersonFirstName;
         public StringField PersonLastname;
