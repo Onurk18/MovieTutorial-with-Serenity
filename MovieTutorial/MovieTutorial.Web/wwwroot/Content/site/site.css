@@ -103,3 +103,6 @@
 .s-MovieDB-PersonDialog .s-PersonMovieGrid > .grid-container {
   height: 186px;
 }
+.s-MovieDB-PersonDialog .s-PersonMovieGrid > .grid-container {
+  height: 500px;
+}

@@ -13,6 +13,8 @@ export interface MovieRow {
     Runtime?: number;
     Kind?: MovieKind;
     GenreList?: number[];
+    PrimaryImage?: string;
+    GalleryImages?: string;
 }
 
 export abstract class MovieRow {

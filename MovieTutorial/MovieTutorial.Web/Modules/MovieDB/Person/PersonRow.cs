@@ -13,6 +13,21 @@ namespace MovieTutorial.MovieDB;
 [LookupScript("MovieDB.Person")]
 public sealed class PersonRow : Row<PersonRow.RowFields>, IIdRow, INameRow
 {
+    [DisplayName("Primary Image"), Size(100),
+         ImageUploadEditor(FilenameFormat = "Person/PrimaryImage/~")]
+    public string PrimaryImage
+    {
+        get => fields.PrimaryImage[this];
+        set => fields.PrimaryImage[this] = value;
+    }
+
+    [DisplayName("Gallery Images"),
+     MultipleImageUploadEditor(FilenameFormat = "Person/GalleryImages/~")]
+    public string GalleryImages
+    {
+        get => fields.GalleryImages[this];
+        set => fields.GalleryImages[this] = value;
+    }
     [DisplayName("Person Id"), Identity, IdProperty]
     public int? PersonId
     {
@@ -78,6 +93,8 @@ public sealed class PersonRow : Row<PersonRow.RowFields>, IIdRow, INameRow
         public EnumField<Gender> Gender;
         public Int32Field Height;
         public StringField Fullname;
+        public StringField PrimaryImage;
+        public StringField GalleryImages;
 
 
     }

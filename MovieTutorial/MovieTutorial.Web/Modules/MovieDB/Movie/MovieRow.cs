@@ -14,6 +14,21 @@ namespace MovieTutorial.MovieDB;
 [ModifyPermission("Administration:General")]
 public sealed class MovieRow : Row<MovieRow.RowFields>, IIdRow, INameRow
 {
+    [DisplayName("Primary Image"), Size(100),
+         ImageUploadEditor(FilenameFormat = "Movie/PrimaryImage/~")]
+    public string PrimaryImage
+    {
+        get => fields.PrimaryImage[this];
+        set => fields.PrimaryImage[this] = value;
+    }
+
+    [DisplayName("Gallery Images"),
+     MultipleImageUploadEditor(FilenameFormat = "Movie/GalleryImages/~")]
+    public string GalleryImages
+    {
+        get => fields.GalleryImages[this];
+        set => fields.GalleryImages[this] = value;
+    }
     [MasterDetailRelation(foreignKey: "MovieId", IncludeColumns = "PersonFullname")]
     [DisplayName("Cast List"), NotMapped]
     public List<MovieCastRow> CastList
@@ -97,6 +112,8 @@ public sealed class MovieRow : Row<MovieRow.RowFields>, IIdRow, INameRow
         public Int32Field Runtime;
         public EnumField<MovieKind> Kind;
         public ListField<Int32> GenreList;
+        public StringField PrimaryImage;
+        public StringField GalleryImages;
 
 
     }
