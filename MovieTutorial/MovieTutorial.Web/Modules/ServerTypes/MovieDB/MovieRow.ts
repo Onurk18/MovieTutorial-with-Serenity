@@ -1,7 +1,9 @@
-﻿import { MovieKind } from "../Web/Modules.MovieDB.Movie.MovieKind";
+﻿import { MovieCastRow } from "./MovieCastRow";
+import { MovieKind } from "../Web/Modules.MovieDB.Movie.MovieKind";
 import { fieldsProxy } from "@serenity-is/corelib/q";
 
 export interface MovieRow {
+    CastList?: MovieCastRow[];
     MovieId?: number;
     Title?: string;
     Description?: string;

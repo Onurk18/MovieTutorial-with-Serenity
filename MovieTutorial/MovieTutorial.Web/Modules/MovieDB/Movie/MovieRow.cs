@@ -14,6 +14,13 @@ namespace MovieTutorial.MovieDB;
 [ModifyPermission("Administration:General")]
 public sealed class MovieRow : Row<MovieRow.RowFields>, IIdRow, INameRow
 {
+    [MasterDetailRelation(foreignKey: "MovieId", IncludeColumns = "PersonFullname")]
+    [DisplayName("Cast List"), NotMapped]
+    public List<MovieCastRow> CastList
+    {
+        get => fields.CastList[this];
+        set => fields.CastList[this] = value;
+    }
     [DisplayName("Movie Id"), Identity, IdProperty]
     public int? MovieId
     {
@@ -80,6 +87,7 @@ public sealed class MovieRow : Row<MovieRow.RowFields>, IIdRow, INameRow
 
     public class RowFields : RowFieldsBase
     {
+        public RowListField<MovieCastRow> CastList;
         public Int32Field MovieId;
         public StringField Title;
         public StringField Description;
